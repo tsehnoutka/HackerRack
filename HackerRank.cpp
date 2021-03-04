@@ -1,71 +1,52 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//Operator Overloading
 
-#include <iostream>
-#include <vector>
-#include <sstream>
+#include<iostream>
 
-
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
+using namespace std;
 
 class Complex
 {
 public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
-
+    int a, b;
+    void input(string s)
+    {
+        int v1 = 0;
+        int i = 0;
+        while (s[i] != '+'){  //  convert the frist number to integer
+            v1 = v1 * 10 + s[i] - '0';
+            i++;
+        }
+        while (s[i] == ' ' || s[i] == '+' || s[i] == 'i') { //  move past spaces, plses ot 'i's
+            i++;
+        }
+        int v2 = 0;
+        while (i < s.length()){  //  get second part of complex number
+            v2 = v2 * 10 + s[i] - '0';  
+            i++;
+        }
+        a = v1;
+        b = v2;
+    }
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
-}
 
+//Overload operators + and << for the class complex
+//+ should add two complex numbers as (a+ib) + (c+id) = (a+c) + i(b+d)
+//<< should print a complex number in the format "a+ib"
+Complex operator+(const Complex& lhs, const Complex& rhs) {
+    return { lhs.a + rhs.a, lhs.b + rhs.b };
+}
 std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
+    return std::cout << c.a << (c.b > 0 ? '+' : '-') << "i" << c.b;
 }
-void OverloadOperators() {
 
-
-}
 int main()
 {
-	std::cout << "Hello World!\n";
-
-	//variableSizedArrays();
-	OverloadOperators();
+    Complex x, y;
+    string s1, s2;
+    cin >> s1;
+    cin >> s2;
+    x.input(s1);
+    y.input(s2);
+    Complex z = x + y;
+    cout << z << endl;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
