@@ -2,70 +2,47 @@
 //
 
 #include <iostream>
-#include <vector>
-#include <sstream>
 
 
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
+enum class Fruit { apple, orange, pear };
+enum class Color { red, green, orange };
 
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
+template <typename T> struct Traits;
 
-class Complex
-{
-public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
-
+// Define specializations for the Traits class template here.
+template <>
+struct Traits<Fruit> {
+    static std::string name(int index) {
+        switch (index) {
+        case 0:return "apple";
+        case 1: return "orange";
+        case 2: return "pear";
+        }
+        return "unknown";
+    }
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
-}
+template <>
+struct Traits<Color> {
+    static std::string name(int index) {
+        switch (index) {
+        case 0:return "red";
+        case 1: return "green";
+        case 2: return "orange";
+        }
+        return "unknown";
+    }
+};
 
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
-}
-void OverloadOperators() {
 
-
-}
 int main()
 {
-	std::cout << "Hello World!\n";
+	int t = 0; std::cin >> t;
 
-	//variableSizedArrays();
-	OverloadOperators();
+	for (int i = 0; i != t; ++i) {
+		int index1; std::cin >> index1;
+		int index2; std::cin >> index2;
+		std::cout << Traits<Color>::name(index1) << " ";
+		std::cout << Traits<Fruit>::name(index2) << "\n";
+	}
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
 
