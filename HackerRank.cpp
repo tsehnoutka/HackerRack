@@ -3,65 +3,59 @@
 #include <algorithm>
 #include <vector>
 
+//Define the structs Workshops and Available_Workshops.
 struct Workshop {
-	int start;
-	int end;
-	int duration;
+    int start;
+    int end;
+    int duration;
+};
+struct compare_start_time {
+    inline bool operator() (const Workshop& lhs, const Workshop& rhs) {
+        return (lhs.end < rhs.end);
+    }
 };
 
 struct Available_Workshops {
-	int n = 0;
-	std::vector<Workshop> myWorkshops;
+    int n = 0;
+    std::vector<Workshop> myWorkshops;
 };
-struct compare_start_time {
-	inline bool operator() (const Workshop& lhs, const Workshop& rhs) {
-		return (lhs.start < rhs.start);
-	}
-};
-
 
 Available_Workshops* initialize(int start_time[], int duration[], int n) {
-	//   Creates an Available_Workshops object and initializes its elements using the 
-	//   elements in the  and  parameters (both are of size ). Here,  and  are the 
-	//   respective start time and duration for the  workshop. This function must 
-	//   return a pointer to an Available_Workshops object.
+    //   Creates an Available_Workshops object and initializes its elements using the 
+    //   elements in the  and  parameters (both are of size ). Here,  and  are the 
+    //   respective start time and duration for the  workshop. This function must 
+    //   return a pointer to an Available_Workshops object.
 
-	Available_Workshops* arrAvailableWorkshops = new Available_Workshops;
-	arrAvailableWorkshops->n = n;
-	for (int i = 0; i < n; i++) {
-		Workshop tempWrkShp;
-		tempWrkShp.start = start_time[i];
-		tempWrkShp.end = start_time[i] + duration[i];
-		tempWrkShp.duration = duration[i];
-		arrAvailableWorkshops->myWorkshops.push_back(tempWrkShp);
-	}
-	std::sort(arrAvailableWorkshops->myWorkshops.begin(), arrAvailableWorkshops->myWorkshops.end(), compare_start_time());
-	return arrAvailableWorkshops;
+    Available_Workshops* arrAvailableWorkshops = new Available_Workshops;
+    arrAvailableWorkshops->n = n;
+    Workshop tempWrkShp;
+    for (int i = 0; i < n; i++) {
+        tempWrkShp.start = start_time[i];
+        tempWrkShp.end = start_time[i] + duration[i];
+        tempWrkShp.duration = duration[i];
+        arrAvailableWorkshops->myWorkshops.push_back(tempWrkShp);
+    }
+    std::sort(arrAvailableWorkshops->myWorkshops.begin(), arrAvailableWorkshops->myWorkshops.end(), compare_start_time());
+    
+    return arrAvailableWorkshops;
 }
 
 int CalculateMaxWorkshops(Available_Workshops* ptr) {
-	//   Returns the maximum number of workshops the student can attend—without 
-	//   overlap. The next workshop cannot be attended until the previous workshop ends.
+    //   Returns the maximum number of workshops the student can attend—without 
+    //   overlap. The next workshop cannot be attended until the previous workshop ends.
 
-	int retval = 1; //  the number of workshops a person can attend
 
-	if (ptr->n <= 0)
-		return 0;
+    int retval = 1; //  the number of workshops a person can attend
+    int prevEndTime = ptr->myWorkshops.at(0).end;
+    for (int i = 1; i < ptr->n; i++) {
+        if (prevEndTime <= ptr->myWorkshops.at(i).start) {
+            retval++;
+            prevEndTime = ptr->myWorkshops.at(i).end;
+        }
+    }
 
-	int prevEndTime = ptr->myWorkshops[0].end;
-
-	//loop through the workshops
-	//  compare prevTotalTime to current start
-	//  if prevTotalTime < current start time, they can attend the workshop
-	for (int x = 1; x < ptr->n - 1; x++) {
-		if (prevEndTime <= ptr->myWorkshops[x].start)
-			++retval;
-		prevEndTime = ptr->myWorkshops[x].end;
-	}
-
-	return retval;
+    return retval;
 }
-
 int main(int argc, char* argv[]) {
 	int n; // number of workshops
 	std::cin >> n;
