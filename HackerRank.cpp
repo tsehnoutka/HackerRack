@@ -1,71 +1,98 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
+#include <cmath>
+#include <cstdio>
 #include <vector>
-#include <sstream>
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
+class Person {
+private:
 
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
-
-class Complex
-{
+    string name;
+    int age;
 public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
+    Person() :name(""), age(0) {
+    }
+    virtual void getdata() {
+        std::cin >> name >> age;
+    }
+    virtual void putdata() {
+        std::cout << name << " " << age << " ";
+    }
 
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
+class Professor : public Person {
+private:
+    static int id_num;
+    int publications;
+    int cur_id;
+public:
+    Professor() :publications(0), cur_id(0) {
+        id_num++;
+    }
+    void getdata() {
+        Person::getdata();
+        std::cin >> publications;
+        cur_id = id_num;
+    }
+    void putdata() {
+        Person::putdata();
+        std::cout << publications << " " << cur_id << std::endl;
+    }
+};
+class Student : public Person {
+private:
+    static int id_num;
+    const static int MAX_MARKS = 6;
+    int marks[MAX_MARKS];
+    int cur_id;
+public:
+    Student() {
+        for (int x = 0; x < MAX_MARKS; x++)
+            marks[x] = 0;
+        cur_id = 0;
+        id_num++;
+    }
+    void getdata() {
+        Person::getdata();
+        for (int x = 0; x < MAX_MARKS; x++)
+            std::cin >> marks[x];
+        cur_id = id_num;
+    }
+    void putdata() {
+        Person::putdata();
+        int total = 0;
+        for (int x = 0; x < MAX_MARKS; x++)
+            total += marks[x];
+        std::cout << total << " " << cur_id << std::endl;;
+    }
+};
+int Professor::id_num = 0;
+int Student::id_num = 0;
+int main() {
+	Person* p = new Professor;
+	p->getdata();
+/*	int n, val;
+	cin >> n; //The number of objects that is going to be created.
+	Person* per[n];
+
+	for (int i = 0; i < n; i++) {
+
+		cin >> val;
+		if (val == 1) {
+			// If val is 1 current object is of type Professor
+			per[i] = new Professor;
+
+		}
+		else per[i] = new Student; // Else the current object is of type Student
+
+		per[i]->getdata(); // Get the data from the user.
+
+	}
+
+	for (int i = 0; i < n; i++)
+		per[i]->putdata(); // Print the required output for each object.
+*/
+	return 0;
+
 }
-
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
-}
-void OverloadOperators() {
-
-
-}
-int main()
-{
-	std::cout << "Hello World!\n";
-
-	//variableSizedArrays();
-	OverloadOperators();
-}
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
