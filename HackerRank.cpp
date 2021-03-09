@@ -1,71 +1,56 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
-#include <vector>
+#include <string>
 #include <sstream>
+#include <exception>
+using namespace std;
 
-
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
-
-class Complex
+class BadLengthException : public exception
 {
+private:
+	int n;
+	std::string retVal;
 public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
+	BadLengthException(int x) :n(x) {
+		retVal = std::to_string(n); 
+	};
 
+	virtual const char* what() const throw()
+	{
+		return retVal.c_str();
+	}
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
+
+bool checkUsername(std::string username) {
+	bool isValid = true;
+	int n = username.length();
+	if (n < 5) {
+		throw BadLengthException(n);
+	}
+	for (int i = 0; i < n - 1; i++) {
+		if (username[i] == 'w' && username[i + 1] == 'w') {
+			isValid = false;
+		}
+	}
+	return isValid;
 }
 
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
+int main() {
+	int T; std::cin >> T;
+	while (T--) {
+		std::string username;
+		std::cin >> username;
+		try {
+			bool isValid = checkUsername(username);
+			if (isValid) {
+				std::cout << "Valid" << '\n';
+			}
+			else {
+				std::cout << "Invalid" << '\n';
+			}
+		}
+		catch (BadLengthException e) {
+			std::cout << "Too short: " << e.what() << '\n';
+		}
+	}
+	return 0;
 }
-void OverloadOperators() {
-
-
-}
-int main()
-{
-	std::cout << "Hello World!\n";
-
-	//variableSizedArrays();
-	OverloadOperators();
-}
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-

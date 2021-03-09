@@ -1,0 +1,13 @@
+Sample Input
+
+3
+Peter
+Me
+Arxwwz
+
+
+Sample Output
+
+Valid
+Too short: 2
+Invalid
