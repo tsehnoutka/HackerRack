@@ -2,70 +2,47 @@
 //
 
 #include <iostream>
-#include <vector>
-#include <sstream>
+#include<string>
 
-
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
-
-class Complex
-{
+class Student {
+private:
+	int age = 0;
+	std::string first_name = "";
+	std::string last_name = "";
+	int standard = 0;
 public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
+	int get_age() { return age; }
+	std::string get_first_name() { return first_name; }
+	std::string get_last_name() { return last_name; }
+	int get_standard() { return standard;  }
 
+	void set_age(const int a) { age = a;  }
+	void set_first_name(const std::string fn) { first_name = fn; }
+	void set_last_name(const std::string fn) { last_name = fn; }
+	void set_standard(const int s) { standard = s; }
+
+	std::string to_string() { return std::to_string(age) + "," + first_name + "," + last_name + "," + std::to_string(standard); }
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
-}
-
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
-}
-void OverloadOperators() {
-
-
-}
 int main()
 {
-	std::cout << "Hello World!\n";
+    int age, standard;
+    string first_name, last_name;
 
-	//variableSizedArrays();
-	OverloadOperators();
+    cin >> age >> first_name >> last_name >> standard;
+
+    Student st;
+    st.set_age(age);
+    st.set_standard(standard);
+    st.set_first_name(first_name);
+    st.set_last_name(last_name);
+
+    cout << st.get_age() << "\n";
+    cout << st.get_last_name() << ", " << st.get_first_name() << "\n";
+    cout << st.get_standard() << "\n";
+    cout << "\n";
+    cout << st.to_string();
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
 
 
