@@ -1,71 +1,57 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
+#include <string>
+#include <stdexcept>
 #include <vector>
-#include <sstream>
+#include <cmath>
+#include <iostream>
+using namespace std;
 
+/*
+If the compute function runs fine with the given arguments, then print the result of the function call.
+If it fails to allocate the memory that it needs, print Not enough memory.
+If any other standard C++ exception occurs, print Exception: S where  is the exception's error message.
+If any non-standard exception occurs, print Other Exception
+*/
 
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
-
-class Complex
-{
+class Server {
+private:
+	static int load;
 public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
-
+	static int compute(long long A, long long B) {
+		load += 1;
+		if (A < 0) {
+			throw std::invalid_argument("A is negative");
+		}
+		vector<int> v(A, 0);
+		int real = -1, cmplx = sqrt(-1);
+		if (B == 0) throw 0;
+		real = (A / B) * real;
+		int ans = v.at(B);
+		return real + A - B * ans;
+	}
+	static int getLoad() {
+		return load;
+	}
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
+int Server::load = 0;
+
+int main() {
+	int T; std::cin >> T;
+	while (T--) {
+		long long A, B;
+		std::cin >> A >> B;
+		try {
+			cout << Server::compute(A, B) << endl;
+		}
+		catch (bad_alloc& e) {
+			cout << "Not enough memory" << endl;
+		}
+		catch (exception& e) {
+			cout << "Exception: " << e.what() << endl;
+		}
+		catch (...) {
+			cout << "Other Exception" << endl;
+		}
+	}
+	std::cout << Server::getLoad() << std::endl;
+	return 0;
 }
-
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
-}
-void OverloadOperators() {
-
-
-}
-int main()
-{
-	std::cout << "Hello World!\n";
-
-	//variableSizedArrays();
-	OverloadOperators();
-}
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
