@@ -1,50 +1,49 @@
-In this challenge, we work with string streams.
+C++ provides a nice alternative data type to manipulate strings, and the data type is conveniently called string. Some of its widely used features are the following:
 
-stringstream is a stream class to operate on strings. It implements input/output operations on memory (string) based streams. stringstream can be helpful in different type of parsing. The following operators/functions are commonly used here
+Declaration:
 
-Operator >> Extracts formatted data.
-Operator << Inserts formatted data.
-Method str() Gets the contents of underlying string device object.
-Method str(string) Sets the contents of underlying string device object.
-Its header file is sstream.
+string a = "abc";
+Size:
 
-One common use of this class is to parse comma-separated integers from a string (e.g., "23,4,56").
+int len = a.size();
+Concatenate two strings:
 
-stringstream ss("23,4,56");
-char ch;
-int a, b, c;
-ss >> a >> ch >> b >> ch >> c;  // a = 23, b = 4, c = 56
-Here  is a storage area for the discarded commas.
+string a = "abc";
+string b = "def";
+string c = a + b; // c = "abcdef".
+Accessing  element:
 
-If the >> operator returns a value, that is a true value for a conditional. Failure to return a value is false.
+string s = "abc";
+char   c0 = s[0];   // c0 = 'a'
+char   c1 = s[1];   // c1 = 'b'
+char   c2 = s[2];   // c2 = 'c'
 
-Given a string of comma delimited integers, return a vector of integers.
-
-Function Description
-
-Complete the parseInts function in the editor below.
-
-parseInts has the following parameters:
-
-string str: a string of comma separated integers
-Returns
-
-vector<int>: a vector of the parsed integers.
-Note You can learn to push elements onto a vector by solving the first problem in the STL chapter.
+s[0] = 'z';         // s = "zbc"
+P.S.: We will use cin/cout to read/write a string.
 
 Input Format
 
-There is one line of  integers separated by commas.
+You are given two strings,  and , separated by a new line. Each string will consist of lower case Latin characters ('a'-'z').
 
-Constraints
+Output Format
 
-The length of  is less than .
+In the first line print two space-separated integers, representing the length of  and  respectively.
+In the second line print the string produced by concatenating  and  ().
+In the third line print two strings separated by a space,  and .  and  are the same as  and , respectively, except that their first characters are swapped.
 
 Sample Input
 
-23,4,56
+abcd
+ef
 Sample Output
 
-23
-4
-56
+4 2
+abcdef
+ebcd af
+Explanation
+
+ "abcd"
+ "ef"
+ "abcdef"
+ "ebcd"
+ "af"
