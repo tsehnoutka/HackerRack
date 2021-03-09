@@ -1,71 +1,38 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-#include <iostream>
-#include <vector>
 #include <sstream>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
+vector<int> parseInts(string str) {
+    // Complete this function
+    
+    vector<int> retVal;
+    char ch='0';
+    int t=0; 
+    stringstream words(str);
 
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
+    words >> t;
+    words >> ch;
+    int iCommaCount = std::count(str.begin(), str.end(), ',');
+    while(iCommaCount>=0)
+    {
+        retVal.push_back(t);
+        words >> t;
+        words >> ch;  //  get rid of comma
+        iCommaCount--;
+    }
+    
+    return retVal;
 }
 
-class Complex
-{
-public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
+int main() {
+    string str;
+    cin >> str;
+    vector<int> integers = parseInts(str);
+    for (int i = 0; i < integers.size(); i++) {
+        cout << integers[i] << "\n";
+    }
 
-};
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
+    return 0;
 }
-
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
-}
-void OverloadOperators() {
-
-
-}
-int main()
-{
-	std::cout << "Hello World!\n";
-
-	//variableSizedArrays();
-	OverloadOperators();
-}
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
