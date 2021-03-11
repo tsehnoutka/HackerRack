@@ -16,7 +16,11 @@ int main() {
         cin >> item;
         v.push_back(item);
     }
-    sort(v.begin(), v.end());
+    int index = 0, begin = 0, end = 0;
+    cin >> index >> begin >> end;
+    v.erase(v.begin()+index - 1); // subtract one because input is for a 1 based array ( not a zero based array )
+    v.erase(v.begin() + begin-1, v.begin() + end-1);  // subtract one because input is for a 1 based array ( not a zero based array )
+    cout << v.size() << endl;;
     for (int x : v) {
         cout << x << " ";
     }
