@@ -1,53 +1,50 @@
-You are provided with a vector of  integers. Then, you are given  queries. 
-For the first query, you are provided with  integer, which denotes a position 
-in the vector. The value at this position in the vector needs to be erased. 
-The next query consists of  integers denoting a range of the positions in 
-the vector. The elements which fall under that range should be removed. The 
-second query is performed on the updated vector which we get after performing 
-the first query.
-The following are some useful vector functions:
+You are given  integers in sorted order. Also, you are given  queries. In each 
+query, you will be given an integer and you have to tell whether that integer 
+is present in the array. If so, you have to tell at which index it is present 
+and if it is not present, you have to tell the index at which the smallest 
+integer that is just greater than the given number is present.
 
-erase(int position):
+Lower bound is a function that can be used with a sorted vector. Learn how to 
+use lower bound to solve this problem by clicking here.
 
-Removes the element present at position.  
-Ex: v.erase(v.begin()+4); (erases the fifth element of the vector v)
-erase(int start,int end):
-
-Removes the elements in the range from start to end inclusive of the start and 
-exclusive of the end.
-Ex:v.erase(v.begin()+2,v.begin()+5);(erases all the elements from the third 
-element to the fifth element.)
 Input Format
 
-The first line of the input contains an integer .The next line contains  space 
-separated integers(1-based index).The third line contains a single integer,
-denoting the position of an element that should be removed from the vector.The 
-fourth line contains two integers  and  denoting the range that should be 
-erased from the vector inclusive of a and exclusive of b.
+The first line of the input contains the number of integers . The next line 
+contains  integers in sorted order. The next line contains , the number of 
+queries. Then  lines follow each containing a single integer .
 
+Note: If the same number is present multiple times, you have to print the 
+first index at which it occurs. Also, the input is such that you always have 
+an answer for each query.
 
 Constraints
 
 
+,where  is  element in the array.
+
 
 Output Format
 
-Print the size of the vector in the first line and the elements of the vector 
-after the two erase operations in the second line separated by space.
+For each query you have to print "Yes" (without the quotes) if the number is 
+present and at which index(1-based) it is present separated by a space.
+
+If the number is not present you have to print "No" (without the quotes) 
+followed by the index of the next smallest number just greater than that number.
+
+You have to output each query in a new line.
 
 Sample Input
 
-6
-1 4 6 2 8 9
-2
-2 4
+ 8
+ 1 1 2 2 6 9 9 15
+ 4
+ 1
+ 4
+ 9
+ 15
 Sample Output
 
-3
-1 8 9
-Explanation
-
-The first query is to erase the 2nd element in the vector, which is 4. Then, 
-modifed vector is {1 6 2 8 9}, we want to remove the range of 2~4, which means 
-the 2nd and 3rd elements should be removed. Then 6 and 2 in the modified 
-vector are removed and we finally get {1 8 9}
+ Yes 1
+ No 5
+ Yes 6
+ Yes 8
