@@ -1,71 +1,151 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <vector>
-#include <sstream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <set>
+#include <cassert>
+using namespace std;
 
+struct Node {
+	Node* next;
+	Node* prev;
+	int value;
+	int key;
+	Node(Node* p, Node* n, int k, int val) :prev(p), next(n), key(k), value(val) {};
+	Node(int k, int val) :prev(NULL), next(NULL), key(k), value(val) {};
+};
 
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
+class Cache {
 
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
-
-class Complex
-{
-public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
+protected:
+	map<int, Node*> mp; //map the key to the node in the linked list
+	int cp;  //capacity
+	Node* tail; // double linked list tail pointer
+	Node* head; // double linked list head pointer
+	virtual void set(int, int) = 0; //set function
+	virtual int get(int) = 0; //get function
 
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
+
+class LRUCache : virtual public Cache {
+private:
+public:
+	LRUCache(int c) { cp = c; tail = nullptr; head = nullptr; }
+	void set(int k, int v);
+	int get(int k);
+	~LRUCache(){
+		for (auto &i: mp)
+			delete i.second;
+	}
+	void printMap();
+	void reversePrintMap();
+};
+
+void LRUCache::printMap() {
+	Node* ptrNode = head;
+
+	if (mp.size() == 0)
+		return;
+	while (ptrNode != tail) {
+		cout << ptrNode->key << "/" << ptrNode->value << "  ->  ";
+		ptrNode = ptrNode->next;
+	}
+	cout << ptrNode->key << "/" << ptrNode->value << endl;
+
 }
 
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
+void LRUCache::reversePrintMap() {
+	Node* ptrNode = tail;
+
+	if (mp.size() == 0)
+		return;
+	while (ptrNode != head) {
+		cout << ptrNode->key << "/" << ptrNode->value << "  <-  ";
+		ptrNode = ptrNode->prev;
+	}
+	cout << ptrNode->key << "/" << ptrNode->value << endl;
+
 }
-void OverloadOperators() {
+void LRUCache::set(int k, int v) {
+	map<int, Node*>::iterator itMP = mp.find(k);
+	int mapSize = mp.size();
 
+	if (itMP == mp.end()) {  //  NOT found - add it to front
+		Node* myNode = new Node(k, v);
+		if (mapSize == 0) {
+			tail = myNode;
+			head = myNode;
+		}
+		else {  //  move to front, 
+			myNode->prev = nullptr;
+			myNode->next = head;
+			head->prev = myNode;
+			head = myNode;
 
+			//  remove tail if we are at capacity
+			if (mapSize == cp) {
+				itMP = mp.find(tail->key);
+				mp.erase(itMP);
+				tail->prev->next = nullptr;
+				Node* tempNode = tail->prev;
+				delete tail;
+				tail = tempNode;
+			}
+		}
+		mp.insert(std::pair<int, Node*>(k, myNode));
+	}//  end if NOT found 
+	else {  //  found -  move it to front
+		Node* myNode = itMP->second;
+		if (myNode ==head)
+			head->value = v;
+		else {
+			bool isTail = myNode == tail ? true : false;
+			myNode->prev->next = myNode->next;
+			if (isTail)
+				tail = tail->prev;
+			else
+				myNode->next->prev = myNode->prev;
+			myNode->prev = nullptr;
+			myNode->next = head;
+			head->prev = myNode;
+			myNode->value = v;
+			head = myNode;
+
+		}
+
+	} //  end found
+	//printMap();
+	//reversePrintMap();
 }
-int main()
-{
-	std::cout << "Hello World!\n";
-
-	//variableSizedArrays();
-	OverloadOperators();
+int LRUCache::get(int k) {
+	map<int, Node*>::iterator itMP = mp.find(k);
+	if (itMP != mp.end())
+		return itMP->second->value;
+	return -1;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
+int main() {
+	int n, capacity, i;
+	cin >> n >> capacity;
+	LRUCache l(capacity);
+	for (i = 0; i < n; i++) {
+		string command;
+		cin >> command;
+		cout << command;
+		if (command == "get") {
+			int key;
+			cin >> key;
+			cout << key << endl;
+			cout << l.get(key) << endl;
+		}
+		else if (command == "set") {
+			int key, value;
+			cin >> key >> value;
+			cout << " " << key << " " << value << endl;
+			l.set(key, value);
+		}
+		cout << "\n";
+	}
+	return 0;
+}
