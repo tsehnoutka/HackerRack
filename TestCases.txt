@@ -1,3 +1,5 @@
+Sample Input
+
 7
 1 Jesse 20
 1 Jess 12
@@ -6,3 +8,8 @@
 3 Jesse
 2 Jess
 3 Jess
+Sample Output
+
+30
+20
+0
