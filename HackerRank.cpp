@@ -5,7 +5,7 @@ using namespace std;
 
 void printKMax(int arr[], int n, int k) {
     //Write your code here.
-    std::deque<int> mydeque(arr, arr + sizeof(arr) / sizeof(int));
+    std::deque<int> mydeque(arr, arr + n);
     deque<int>::iterator it = mydeque.begin();
     int iterations = n - k + 1;
     while (iterations > 0) {
@@ -15,8 +15,9 @@ void printKMax(int arr[], int n, int k) {
         iterations--;
     }
     cout << endl;
-
 }
+
+
 int main() {
 
     int t=1;
