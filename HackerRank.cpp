@@ -24,22 +24,10 @@ int main() {
 	for (int x = 0; x < q; x++) {  //  perform the equeries
 		int y;
 		std::cin >> y;
-		unsigned int i = 0;
-		bool found = false;
-		while ( (!found) && (y >= v[i]) && (i < v.size()) ) {
-			if (v[i] == y) {
-				std::cout << "Yes " << i+1 << std::endl; //  need to add one to index casue thi user is a 1-based array
-				found = true;
-			}
-			else {
-				++i;
-
-			}//  end else
-		}  //  end while
-		if (!found)
-			std::cout << "No " << i+1 << std::endl;//  need to add one to index casue thi user is a 1-based array
+		vector<int>::iterator it;
+		it = std::lower_bound(v.begin(), v.end(), y);
+		std::cout << (*it == y)? "Yes " : "No " << it - v.begin() +1 << std::endl;
 	}  // end for
-
 return 0;
 }  //  end main
 
