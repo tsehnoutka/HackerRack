@@ -1,71 +1,56 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
-#include <vector>
-#include <sstream>
 
-
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
-
-class Complex
+using namespace std;
+/*
+ * Create classes Rectangle and RectangleArea
+ */
+class Rectangle
 {
+protected:
+    int width;
+    int height;
 public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
-
+    Rectangle() : width(0), height(0) {};
+    Rectangle(const int w, const int h) : width(w), height(h) {};
+    void display() {
+        cout << width << " " << height << endl;
+    }
 };
-Complex& Complex::operator+(Complex& rhs)
+
+class RectangleArea : public Rectangle
 {
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
-}
+private:
+public:
+    void read_input() {
+        cin >> this->width >> this->height;
+    }
+    void display() {
+        cout << this->width * this->height << endl;
+    }
+};
 
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
-}
-void OverloadOperators() {
 
-
-}
 int main()
 {
-	std::cout << "Hello World!\n";
+    /*
+     * Declare a RectangleArea object
+     */
+    RectangleArea r_area;
 
-	//variableSizedArrays();
-	OverloadOperators();
+    /*
+     * Read the width and height
+     */
+    r_area.read_input();
+
+    /*
+     * Print the width and height
+     */
+    r_area.Rectangle::display();
+
+    /*
+     * Print the area
+     */
+    r_area.display();
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
