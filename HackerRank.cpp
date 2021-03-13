@@ -1,71 +1,77 @@
-// HackerRank.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <sstream>
 
+using namespace std;
 
-void variableSizedArrays() {
-	std::vector<std::vector<int>> a;
-	int i = 0, j = 0, aSize = 0;
-
-	std::cin >> i >> j;  //  i contains the number of arrays, j contains the number of operations 
-	for (int x = 0; x < i; x++) {
-		std::vector<int> k;
-		std::cin >> aSize;
-		for (int y = 0; y < aSize; y++) {
-			int ae = 0;
-			std::cin >> ae;
-			k.push_back(ae);
-		}
-		a.push_back(k);
-	}
-	for (int x = 0; x < j; x++) {
-		int o1 = 0, o2 = 0;
-		std::cin >> o1 >> o2;
-		std::cout << a[o1][o2] << std::endl;
-	}
-}
-
-class Complex
-{
+class Message {
+private:
+    static unsigned int nextID;
+    unsigned int id;
+    string msg;
 public:
-	int a, b;
-	Complex& operator +(Complex& rhs);
-
+    Message():msg("") {}
+    Message(const string& s) :msg(s) { id = nextID++; }
+    const string& get_text() {
+        return msg;
+    }
+    friend bool operator<(const Message& lhs, const Message& rhs) {
+        return (lhs.id < rhs.id) ? true : false;
+    }
 };
-Complex& Complex::operator+(Complex& rhs)
-{
-	a += rhs.a;
-	b += rhs.b;
-	return *this;
+
+class MessageFactory {
+public:
+    MessageFactory() {}
+    Message create_message(const string& text) {
+        Message m = Message(text);
+        return m;
+    }
+};
+unsigned int Message::nextID = 0;
+
+class Recipient {
+private:
+    void fix_order() {
+        sort(messages_.begin(), messages_.end());
+    }
+    vector<Message> messages_;
+public:
+    Recipient() {}
+    void receive(const Message& msg) {
+        messages_.push_back(msg);
+    }
+    void print_messages() {
+        fix_order();
+        for (auto& msg : messages_) {
+            cout << msg.get_text() << endl;
+        }
+        messages_.clear();
+    }
+};
+
+class Network {
+public:
+    static void send_messages(vector<Message> messages, Recipient& recipient) {
+        // simulates the unpredictable network, where sent messages might arrive in unspecified order
+        random_shuffle(messages.begin(), messages.end());
+        for (auto msg : messages) {
+            recipient.receive(msg);
+        }
+    }
+};
+
+
+
+int main() {
+    MessageFactory message_factory;
+    Recipient recipient;
+    vector<Message> messages;
+    string text;
+    while (getline(cin, text)) {
+        messages.push_back(message_factory.create_message(text));
+    }
+    Network::send_messages(messages, recipient);
+    recipient.print_messages();
 }
-
-std::ostream& operator << (std::ostream& os, Complex& c) {
-	return std::cout << c.a << "+i" << c.b;
-}
-void OverloadOperators() {
-
-
-}
-int main()
-{
-	std::cout << "Hello World!\n";
-
-	//variableSizedArrays();
-	OverloadOperators();
-}
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-

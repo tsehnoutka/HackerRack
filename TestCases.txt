@@ -1,0 +1,11 @@
+Sample Input 0
+Alex
+Hello Monique!
+What'up?
+Not much :(
+
+Sample Output 0
+Alex
+Hello Monique!
+What'up?
+Not much :(
