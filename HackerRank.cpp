@@ -31,8 +31,8 @@ static inline void trim(string& s) {
 int main() {
 	/* Enter your code here. Read input from STDIN. Print output to STDOUT */
 	map <string, string> tagName;
-	queue<string> tags;
-	queue<string> createKey;
+	deque<string> tags;
+	deque<string> createKey;
 	string line;
 
 	int n = 0, q = 0;
@@ -45,13 +45,20 @@ int main() {
 		//parse line
 		if (line[1] == '/') {
 			//  closing tag
-			tags.pop();
+			tags.pop_back();
 		}
 		else {
 			//  Opening tag
 			int spacePos = line.find(' ');
-			string tag = line.substr(1, spacePos - 1);
-			tags.push(tag);
+			string tag = "";
+			if (spacePos == -1) {
+				tag = line.substr(1,line.size()-2);
+			}
+			else{
+				tag = line.substr(1, spacePos - 1);
+
+			}
+			tags.push_back(tag);
 			unsigned int numOfEqualSigns = std::count(line.begin(), line.end(), '=');
 			unsigned int equalSign = 0;
 			unsigned int first_quote = 0, second_quote = 0;
@@ -69,7 +76,7 @@ int main() {
 				string mapKey = "";
 				while (!createKey.empty()) {
 					mapKey += createKey.front() + ".";
-					createKey.pop();
+					createKey.pop_front();
 				}
 				unsigned int strLengh = mapKey.length();
 				mapKey[strLengh - 1] = '~';
