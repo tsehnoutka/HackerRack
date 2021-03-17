@@ -6,12 +6,9 @@
 using namespace std;
 
 class Matrix {
-private:
 public:
     vector<vector<int>> a;
     Matrix operator+(Matrix m);
-
-
 };
 Matrix Matrix::operator+(Matrix m) {
     Matrix retVal;
